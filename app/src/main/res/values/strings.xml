@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Splits</string>
+    <string name="title_activity_main">Splits</string>
+    <string name="title_home">Home</string>
+    <string name="title_friends">Friends</string>
+    <string name="title_new_transaction">New Transaction</string>
+    <string name="title_activity">Activity</string>
+    <string name="title_profile">Profile</string>
 </resources>
