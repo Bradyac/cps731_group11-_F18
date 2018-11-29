@@ -11,12 +11,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
     private ViewPager viewPager;
+    TextView tv_balance;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,13 +31,21 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //sectionsPageAdapter = new SectionsPageAdapter(getChildFragmentManager());
         viewPager = view.findViewById(R.id.homeViewPager);
         setupViewPager(viewPager);
         TabLayout tabLayout = view.findViewById(R.id.home_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
+        //tv_balance = (TextView) view.findViewById(R.id.tv_balance);
+        //tv_balance.setText("Test");
+        //tv_balance.setText(((MainActivity) getActivity()).getCurrentUser());
+
         return view;
+    }
+
+    public void setText(String text){
+        TextView textView = getView().findViewById(R.id.tv_balance);
+        textView.setText(text);
     }
 
     private void setupViewPager(ViewPager viewPager) {

@@ -1,9 +1,8 @@
 package com.cps731.group11.splits;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,32 +15,27 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class LoginBackgroundWorker extends AsyncTask<String,Void,String> {
-    Context context;
-    AlertDialog alertDialog;
+public class HomeBackgroundWorker extends AsyncTask<String,Void,String> {
+    Fragment fragment;
 
-    LoginBackgroundWorker (Context context) {
-        this.context = context;
-    }
+    HomeBackgroundWorker(Fragment fragment) {this.fragment = fragment;}
 
     @Override
     protected void onPreExecute() {
-        alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("Login Status");
+        super.onPreExecute();
     }
 
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String login_url = "http://splits.atwebpages.com/login.php";
-        switch(type) {
-            case "login":
-                String email = params[1];
-                String password = params[2];
+        String web_url = "http://splits.atwebpages.com/testFrag.php";
+        switch (type) {
+            case "test":
+                String userID = params[1];
 
                 try {
                     // Connection setup
-                    URL url = new URL(login_url);
+                    URL url = new URL(web_url);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setDoOutput(true);
@@ -50,8 +44,7 @@ public class LoginBackgroundWorker extends AsyncTask<String,Void,String> {
                     // Request to server
                     OutputStream outputStream = httpURLConnection.getOutputStream();
                     BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                    String client_request = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email,"UTF-8") + "&"
-                                     + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password,"UTF-8");
+                    String client_request = URLEncoder.encode("user_id", "UTF-8") + "=" + URLEncoder.encode(userID,"UTF-8");
                     bufferedWriter.write(client_request);
                     bufferedWriter.flush();
                     bufferedWriter.close();
@@ -74,23 +67,16 @@ public class LoginBackgroundWorker extends AsyncTask<String,Void,String> {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 break;
         }
         return null;
     }
 
     @Override
-    protected void onPostExecute(String server_reply) {
-        if(server_reply.equals("failed")) {
-            // Login Failed: Alert that login failed
-            alertDialog.setMessage("Login failed. Please try again.");
-            alertDialog.show();
-        } else {
-            // Login Success:
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.putExtra("CURRENT_USER_ID", server_reply);
-            context.startActivity(intent);
-        }
+    protected void onPostExecute(String s) {
+        Log.d("HomeBackgroundWorker", "Reply: " + s);
+        ((BalanceHomeFragment) fragment).tester(s);
     }
 
     @Override
