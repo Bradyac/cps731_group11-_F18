@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.SQLException;
+
 /**
  * Provide views to RecyclerView with data from mDataSet.
  */
@@ -34,8 +36,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                 public void onClick(View v) {
                 }
             });
-            imageView = {ImageView} v.findViewById(R.id.friend_picture);
+            imageView = (ImageView) v.findViewById(R.id.friend_picture);
             textView = (TextView) v.findViewById(R.id.friend_name);
+        }
+
+        public ImageView getImageView() {
+            return imageView;
         }
 
         public TextView getTextView() {
@@ -72,10 +78,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getTextView().setText(friends[position]);
+        try {
+            viewHolder.getImageView().setImageBitmap(friends[position].convertPicture());
+            viewHolder.getTextView().setText(friends[position].getName());
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)
-
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
