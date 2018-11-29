@@ -1,11 +1,13 @@
 package com.cps731.group11.splits.adapter;
 
 import com.cps731.group11.splits.R;
+import com.cps731.group11.splits.model.Friend;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -14,13 +16,14 @@ import android.widget.TextView;
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
     private static final String TAG = "CustomAdapter";
 
-    private String[] mDataSet;
+    private Friend[] friends;
 
     // BEGIN_INCLUDE(recyclerViewSampleViewHolder)
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView imageView;
         private final TextView textView;
 
         public ViewHolder(View v) {
@@ -31,7 +34,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                 public void onClick(View v) {
                 }
             });
-            textView = (TextView) v.findViewById(R.id.textView);
+            imageView = {ImageView} v.findViewById(R.id.friend_picture);
+            textView = (TextView) v.findViewById(R.id.friend_name);
         }
 
         public TextView getTextView() {
@@ -45,8 +49,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
      *
      * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
      */
-    public FriendsAdapter(String[] dataSet) {
-        mDataSet = dataSet;
+    public FriendsAdapter(Friend[] dataSet) {
+        friends = dataSet;
     }
 
     // BEGIN_INCLUDE(recyclerViewOnCreateViewHolder)
@@ -68,13 +72,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getTextView().setText(mDataSet[position]);
+        viewHolder.getTextView().setText(friends[position]);
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataSet.length;
+        return friends.length;
     }
 }
