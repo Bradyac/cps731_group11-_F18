@@ -5,5 +5,6 @@ Team Members: Brady Cunningham (brady.cunningham@ryerson.ca), Jacky Tran (jacky.
               
 Project: Bill Splitting Application (An Android application where you can easily manage money lent or borrowed between friends.)
          
-Preferred Language: Java
+Main Languages: Java/XML/PHP
 Preferred Platform: Android
+Remote webserver hosted on LeadHoster (Contains PHP files + MySql database)
