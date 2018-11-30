@@ -59,7 +59,7 @@ public class NewTransactionFragment extends Fragment {
         Scanner scanner = new Scanner(friendsData).useDelimiter(",");
         while(scanner.hasNext()){
             String name = scanner.next();
-            spinnerNames.add(scanner.next());
+            spinnerNames.add(name);
             spinnerValues.put(name,scanner.next());
         }
         adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, spinnerNames);
@@ -77,8 +77,11 @@ public class NewTransactionFragment extends Fragment {
             RadioButton checkedRadio = (RadioButton) transactionTypes.findViewById(checkedRadioID);
             String str_ntRadio = (String) checkedRadio.getText();
 
+            nt_Amount.setText("");
+            nt_Description.setText("");
+
             NewTransactionBackgroundWorker newTransactionBackgroundWorker = new NewTransactionBackgroundWorker(fragment);
-            newTransactionBackgroundWorker.execute("Transaction", userID, str_ntAmount, str_ntDescription, str_ntFriends, str_ntRadio);
+            newTransactionBackgroundWorker.execute("Transaction", userID, str_ntRadio, str_ntFriends, str_ntAmount, str_ntDescription);
         }
     };
 }

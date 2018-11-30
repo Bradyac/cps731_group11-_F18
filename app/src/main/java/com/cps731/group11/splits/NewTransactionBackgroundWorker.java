@@ -40,25 +40,7 @@ public class NewTransactionBackgroundWorker extends AsyncTask<String, String, St
     protected String doInBackground(String... params) {
         String type = params[0];
         if (type.equalsIgnoreCase("Friends")) {
-            //String id = params[1];
-
-
-
-
-
-
-            String id = "1";
-
-
-
-
-
-
-
-
-
-
-
+            String id = params[1];
             try {
                 URL url = new URL("http://splits.atwebpages.com/getFriends.php");
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -90,10 +72,10 @@ public class NewTransactionBackgroundWorker extends AsyncTask<String, String, St
             }
         } else if (type.equalsIgnoreCase("Transaction")) {
             String id = params[1];
-            String amount = params[2];
-            String description = params[3];
-            String friend = params[4];
-            String checkedRadio = params[5];
+            String checkedRadio = params[2];
+            String friend = params[3];
+            String amount = params[4];
+            String description = params[5];
             String login_url = "http://splits.atwebpages.com/newTransaction.php";
             try {
                 // Connection setup
@@ -108,9 +90,9 @@ public class NewTransactionBackgroundWorker extends AsyncTask<String, String, St
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String client_request = URLEncoder.encode("user", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8") + "&"
                         + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(checkedRadio, "UTF-8")
-                        + URLEncoder.encode("friend", "UTF-8") + "=" + URLEncoder.encode(friend, "UTF-8")
-                        + URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount, "UTF-8")
-                        + URLEncoder.encode("description", "UTF-8") + "=" + URLEncoder.encode(description, "UTF-8");
+                        + "&" + URLEncoder.encode("friend", "UTF-8") + "=" + URLEncoder.encode(friend, "UTF-8")
+                        + "&" + URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount, "UTF-8")
+                        + "&" + URLEncoder.encode("description", "UTF-8") + "=" + URLEncoder.encode(description, "UTF-8");
                 bufferedWriter.write(client_request);
                 bufferedWriter.flush();
                 bufferedWriter.close();
