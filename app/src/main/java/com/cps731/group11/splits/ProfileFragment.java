@@ -54,24 +54,31 @@ public class ProfileFragment extends Fragment {
         lname = (TextView) view.findViewById(R.id.display_lname);
         email = (TextView) view.findViewById(R.id.display_email);
 
-        String type = "test";
+        String type = "getUser";
 
         ProfileBackgroundWorker profileBackgroundWorker = new ProfileBackgroundWorker(this);
         profileBackgroundWorker.execute(type, userID);
+
+
+        ProfileBackgroundWorker profileBackgroundWorker2 = new ProfileBackgroundWorker(this);
+        profileBackgroundWorker2.execute("getTransactions", userID);
 
         return view;
     }
 
     public void setUserInfo(String result) {
         try {
-        JSONObject jObject = new JSONObject(result);
-        fname.setText(jObject.getString("fname"));
-        lname.setText(jObject.getString("lname"));
-        email.setText(jObject.getString("email"));
+            JSONObject jObject = new JSONObject(result);
+            fname.setText(jObject.getString("fname"));
+            lname.setText(jObject.getString("lname"));
+            email.setText(jObject.getString("email"));
         } catch (JSONException e) {
             // Oops
         }
+    }
 
-//        userName.setText(reply);
+    // This will render the list of transactions for the user.
+    public void renderTransactionList(String result) {
+
     }
 }

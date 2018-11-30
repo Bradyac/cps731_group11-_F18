@@ -17,6 +17,7 @@ import java.net.URLEncoder;
 
 public class ProfileBackgroundWorker extends AsyncTask<String,Void,String> {
     Fragment fragment;
+    String type;
 
     ProfileBackgroundWorker(Fragment fragment) {this.fragment = fragment;}
 
@@ -27,56 +28,64 @@ public class ProfileBackgroundWorker extends AsyncTask<String,Void,String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String type = params[0];
-        String web_url = "http://splits.atwebpages.com/getUser.php";
-        switch (type) {
-            case "test":
-                String userID = params[1];
+        type = params[0];
 
-                try {
-                    // Connection setup
-                    URL url = new URL(web_url);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.setRequestMethod("GET");
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setDoInput(true);
+        String web_url = "";
 
-                    // Request to server
-                    OutputStream outputStream = httpURLConnection.getOutputStream();
-                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                    String client_request = URLEncoder.encode("user_id", "UTF-8") + "=" + URLEncoder.encode(userID,"UTF-8");
-                    bufferedWriter.write(client_request);
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                    outputStream.close();
+        if (type.equals("getUser"))
+                web_url = "http://splits.atwebpages.com/user.php";
+        else if (type.equals("getTransactions"))
+                web_url = "http://splits.atwebpages.com/getTransactions.php";
 
-                    // Reply from server
-                    InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                    String server_reply = "";
-                    String line;
-                    while((line = bufferedReader.readLine()) != null) {
-                        server_reply += line;
-                    }
-                    bufferedReader.close();
-                    inputStream.close();
+        String userID = params[1];
 
-                    // Close connection
-                    httpURLConnection.disconnect();
-                    return server_reply;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        try {
+            // Connection setup
+            URL url = new URL(web_url);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
 
-                break;
+            // Request to server
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String client_request = URLEncoder.encode("user_id", "UTF-8") + "=" + URLEncoder.encode(userID,"UTF-8");
+            bufferedWriter.write(client_request);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
+
+            // Reply from server
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+            String server_reply = "";
+            String line;
+            while((line = bufferedReader.readLine()) != null) {
+                server_reply += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+
+            // Close connection
+            httpURLConnection.disconnect();
+            return server_reply;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         return null;
     }
 
     @Override
     protected void onPostExecute(String s) {
-        Log.d("ProfileBackgroundWorker", "Reply: " + s);
-        ((ProfileFragment) fragment).setUserInfo(s);
+        if (type.equals("getUser")) {
+            Log.d("ProfileBackgroundWorker", "Reply: " + s);
+            ((ProfileFragment) fragment).setUserInfo(s);
+        }
+        else if (type.equals("getTransactions")) {
+            Log.d("Transactions", "Reply: " + s);
+        }
     }
 
     @Override
