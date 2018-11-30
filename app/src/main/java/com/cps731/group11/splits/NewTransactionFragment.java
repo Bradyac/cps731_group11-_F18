@@ -28,6 +28,7 @@ public class NewTransactionFragment extends Fragment {
     ArrayAdapter<String> adapter;
     Fragment fragment;
     Button btn_ntCreateTransaction;
+    Map<String, String> spinnerValues;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class NewTransactionFragment extends Fragment {
         nt_Friends = getActivity().findViewById(R.id.spin_ntFriends);
 
         ArrayList<String> spinnerNames = new ArrayList<String>();
-        Map<String, String> spinnerValues = new HashMap<String, String>();
+        spinnerValues = new HashMap<String, String>();
         String friendsData = friendsReply.substring(6,friendsReply.length());
         Scanner scanner = new Scanner(friendsData).useDelimiter(",");
         while(scanner.hasNext()){
@@ -70,7 +71,7 @@ public class NewTransactionFragment extends Fragment {
         public void onClick(View view) {
             String str_ntAmount = nt_Amount.getText().toString();
             String str_ntDescription = nt_Description.getText().toString();
-            String str_ntFriends = nt_Friends.getSelectedItem().toString();
+            String str_ntFriends = spinnerValues.get(nt_Friends.getSelectedItem().toString());
 
             int checkedRadioID = transactionTypes.getCheckedRadioButtonId();
             RadioButton checkedRadio = (RadioButton) transactionTypes.findViewById(checkedRadioID);
