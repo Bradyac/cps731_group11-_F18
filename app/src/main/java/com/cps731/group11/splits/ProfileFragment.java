@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +28,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
     String userID;
@@ -34,6 +37,8 @@ public class ProfileFragment extends Fragment {
     TextView fname;
     TextView lname;
     TextView email;
+
+    TextView trans1desc, trans1type, trans2desc, trans2type, trans3desc, trans3type, trans1amount, trans2amount, trans3amount;
 
     @Nullable
     @Override
@@ -53,6 +58,18 @@ public class ProfileFragment extends Fragment {
         fname = (TextView) view.findViewById(R.id.display_fname);
         lname = (TextView) view.findViewById(R.id.display_lname);
         email = (TextView) view.findViewById(R.id.display_email);
+
+        trans1desc = (TextView) view.findViewById(R.id.trans_1_desc);
+        trans2desc = (TextView) view.findViewById(R.id.trans_2_desc);
+        trans3desc = (TextView) view.findViewById(R.id.trans_3_desc);
+
+        trans1type = (TextView) view.findViewById(R.id.trans_1_type);
+        trans2type = (TextView) view.findViewById(R.id.trans_2_type);
+        trans3type = (TextView) view.findViewById(R.id.trans_3_type);
+
+        trans1amount= (TextView) view.findViewById(R.id.trans_1_amount);
+        trans2amount= (TextView) view.findViewById(R.id.trans_2_amount);
+        trans3amount= (TextView) view.findViewById(R.id.trans_3_amount);
 
         String type = "getUser";
 
@@ -79,6 +96,36 @@ public class ProfileFragment extends Fragment {
 
     // This will render the list of transactions for the user.
     public void renderTransactionList(String result) {
+        try {
+            JSONArray jsonArr = new JSONArray(result);
 
+            for (int i = 0; i < jsonArr.length(); i++)
+            {
+                JSONObject jObject = jsonArr.getJSONObject(i);
+//                Log.d("finally", "Reply: " + jsonObj);
+                if (i == 0) {
+                    trans1desc.setText(jObject.getString("description"));
+                    trans1type.setText(jObject.getString("type"));
+                    trans1amount.setText(jObject.getString("amount"));
+                }
+                if (i == 1) {
+                    trans2desc.setText(jObject.getString("description"));
+                    trans2type.setText(jObject.getString("type"));
+                    trans2amount.setText(jObject.getString("amount"));
+                }
+                if (i == 3) {
+                    trans3desc.setText(jObject.getString("description"));
+                    trans3type.setText(jObject.getString("type"));
+                    trans3amount.setText(jObject.getString("amount"));
+                }
+            }
+
+
+
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

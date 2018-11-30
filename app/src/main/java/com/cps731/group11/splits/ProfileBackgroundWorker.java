@@ -85,6 +85,7 @@ public class ProfileBackgroundWorker extends AsyncTask<String,Void,String> {
         }
         else if (type.equals("getTransactions")) {
             Log.d("Transactions", "Reply: " + s);
+            ((ProfileFragment) fragment).renderTransactionList(s);
         }
     }
 
