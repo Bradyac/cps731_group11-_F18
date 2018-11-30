@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,6 +16,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Blob;
+import java.util.ArrayList;
 
 public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
     Context context;
@@ -22,32 +25,31 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
 
     ActivityBackgroundWorker(Context context) {
         this.context = context;
+
     }
 
     @Override
     protected void onPreExecute() {
-        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog = new AlertDialog.Builder( context).create();
         alertDialog.setTitle("Activity Status");
+
     }
 
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String login_url = "http://splits.atwebpages.com/activity.php";
+        String activity_url = "http://splits.atwebpages.com/activity.php";
         switch(type) {
             case "activity":
-                String email = params[1];
-                String user_id1 = params[2];
-                String user_id2 = params[3];
-                String transtype = params[4];
-                String desc = params[5];
-                String amount = params[6];
+
+                String user_id1 = params[1];
+
 
 
 
                 try {
                     // Connection setup
-                    URL url = new URL(login_url);
+                    URL url = new URL(activity_url);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setDoOutput(true);
@@ -56,13 +58,7 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
                     // Request to server
                     OutputStream outputStream = httpURLConnection.getOutputStream();
                     BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                    String client_request = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email,"UTF-8") + "&"
-                            + URLEncoder.encode("user_id1", "UTF-8") + "=" + URLEncoder.encode(user_id1,"UTF-8") + "&"
-                            + URLEncoder.encode("user_id1", "UTF-8") + "=" + URLEncoder.encode(user_id1,"UTF-8") + "&"
-                            + URLEncoder.encode("user_id2", "UTF-8") + "=" + URLEncoder.encode(user_id2,"UTF-8") + "&"
-                            + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(transtype,"UTF-8") + "&"
-                            + URLEncoder.encode("desc", "UTF-8") + "=" + URLEncoder.encode(desc,"UTF-8") + "&"
-                            + URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount,"UTF-8");
+                    String client_request = URLEncoder.encode("user_id1", "UTF-8") + "=" + URLEncoder.encode(user_id1,"UTF-8");
                     bufferedWriter.write(client_request);
                     bufferedWriter.flush();
                     bufferedWriter.close();
@@ -71,35 +67,62 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
                     // Reply from server
                     InputStream inputStream = httpURLConnection.getInputStream();
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                    String server_reply = "";
+                    ArrayList<String> server_reply = new ArrayList<String>();
                     String line;
                     while((line = bufferedReader.readLine()) != null) {
-                        server_reply += line;
+
+                        server_reply.add(line);
+                        server_reply.add("\n");
                     }
                     bufferedReader.close();
                     inputStream.close();
 
                     // Close connection
                     httpURLConnection.disconnect();
-                    return server_reply;
+                    return String.valueOf(server_reply);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
         }
-        return null;
+        return "";
     }
 
     @Override
     protected void onPostExecute(String server_reply) {
-        if(server_reply.equals("failed")) {
-            // Login Failed: Alert that login failed
-            alertDialog.setMessage("Login failed. Please try again.");
+
+
+        if(server_reply.equals("error!")) {
+            // Login Failed: Alert that login failedretrieve data.");
             alertDialog.show();
         } else {
             // Login Success:
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.putExtra("CURRENT_USER_ID", server_reply);
+            ArrayList<String> transArr = new ArrayList<String>();
+            ArrayList<String> user1Arr = new ArrayList<String>();
+            ArrayList<String> user2Arr = new ArrayList<String>();
+            ArrayList<String> typeArr = new ArrayList<String>();
+            ArrayList<String> descArr = new ArrayList<String>();
+            ArrayList<String> amtArr = new ArrayList<String>();
+            ArrayList<String> dateArr = new ArrayList<String>();
+            String lines[] = server_reply.split("\\r?\\n");
+            for (int i=0;i<lines.length;i++){
+                String[] transRow = lines[i].split(",");
+                transArr.add(transRow[0]);
+                user1Arr.add(transRow[1]);
+                user2Arr.add(transRow[2]);
+                typeArr.add(transRow[3]);
+                descArr.add(transRow[4]);
+                amtArr.add(transRow[5]);
+                dateArr.add(transRow[6]);
+            }
+            Intent intent = new Intent(context, FPActivityFragment.class);
+            intent.putExtra("TRANSACTION_IDS", transArr);
+            intent.putExtra("USER_IDS1", user1Arr);
+            intent.putExtra("USER_IDS2", user2Arr);
+            intent.putExtra("TYPES", typeArr);
+            intent.putExtra("DESCRIPTIONS", descArr);
+            intent.putExtra("AMOUNTS", amtArr);
+            intent.putExtra("DATES", dateArr);
             context.startActivity(intent);
         }
     }
