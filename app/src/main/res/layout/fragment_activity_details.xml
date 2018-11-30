@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/detailViewActivity"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/textbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textbox"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="3dp"
+        android:text="Date"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/amount"
+        app:layout_constraintEnd_toStartOf="@+id/dateText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailViewActivity" />
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="39dp"
+        android:text="Amount"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/descText"
+        app:layout_constraintEnd_toStartOf="@+id/amountText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textbox" />
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="2dp"
+        android:text="Datefromtable"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textbox" />
+
+    <TextView
+        android:id="@+id/amountText"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="2dp"
+        android:text="amt from table"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/amount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/amount" />
+
+    <TextView
+        android:id="@+id/descText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="7dp"
+        android:text="descfromtable"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/dateText12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amount" />
+
+    <TextView
+        android:id="@+id/dateText12"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="74dp"
+        android:text="pic (temp)"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descText" />
+
+</android.support.constraint.ConstraintLayout>
