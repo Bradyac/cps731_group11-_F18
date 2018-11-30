@@ -8,11 +8,12 @@ import java.sql.SQLException;
 
 public class Friend {
 
-    private Blob picture;
+    //private Blob picture;
     private String name;
+    private int id;
 
-    public Friend(Blob picture, String name){
-        this.picture = picture;
+    public Friend(String name, int id){
+        this.id = id;
         this.name = name;
     }
 
@@ -24,7 +25,9 @@ public class Friend {
         this.name = name;
     }
 
-    public Blob getPicture() {
+    public int getId(){ return this.id; }
+
+    /*public Blob getPicture() {
         return picture;
     }
 
@@ -36,5 +39,5 @@ public class Friend {
         byte[] byteArray = picture.getBytes(1, (int)picture.length());
         Bitmap bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         return bm;
-    }
+    }*/
 }

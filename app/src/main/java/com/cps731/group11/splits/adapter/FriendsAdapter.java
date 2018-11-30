@@ -25,7 +25,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
+        //private final ImageView imageView;
         private final TextView textView;
 
         public ViewHolder(View v) {
@@ -36,13 +36,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                 public void onClick(View v) {
                 }
             });
-            imageView = (ImageView) v.findViewById(R.id.friend_picture);
+            //imageView = (ImageView) v.findViewById(R.id.friend_picture);
             textView = (TextView) v.findViewById(R.id.friend_name);
         }
 
-        public ImageView getImageView() {
+        /*public ImageView getImageView() {
             return imageView;
-        }
+        }*/
 
         public TextView getTextView() {
             return textView;
@@ -78,12 +78,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        try {
-            viewHolder.getImageView().setImageBitmap(friends[position].convertPicture());
+        /*try {*/
+            //viewHolder.getImageView().setImageBitmap(friends[position].convertPicture());
             viewHolder.getTextView().setText(friends[position].getName());
-        } catch (SQLException e){
+        /*} catch (SQLException e){
             e.printStackTrace();
-        }
+        }*/
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)
     // Return the size of your dataset (invoked by the layout manager)
