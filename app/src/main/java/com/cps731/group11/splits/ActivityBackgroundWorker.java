@@ -1,9 +1,11 @@
 package com.cps731.group11.splits;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -20,19 +22,17 @@ import java.sql.Blob;
 import java.util.ArrayList;
 
 public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
-    Context context;
+    Fragment fragment;
     AlertDialog alertDialog;
 
-    ActivityBackgroundWorker(Context context) {
-        this.context = context;
+    ActivityBackgroundWorker(Fragment fragment) {
+        this.fragment = fragment;
 
     }
 
     @Override
     protected void onPreExecute() {
-        alertDialog = new AlertDialog.Builder( context).create();
-        alertDialog.setTitle("Activity Status");
-
+        super.onPreExecute();
     }
 
     @Override
@@ -43,10 +43,6 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
             case "activity":
 
                 String user_id1 = params[1];
-
-
-
-
                 try {
                     // Connection setup
                     URL url = new URL(activity_url);
@@ -90,8 +86,6 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String server_reply) {
-
-
         if(server_reply.equals("error!")) {
             // Login Failed: Alert that login failedretrieve data.");
             alertDialog.show();
@@ -115,7 +109,12 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
                 amtArr.add(transRow[5]);
                 dateArr.add(transRow[6]);
             }
-            Intent intent = new Intent(context, FPActivityFragment.class);
+
+            // USE THIS TO TRANSFER DATA. SET DATA TO PARAM. THIS METHOD IS IN ActivityFragment.java
+            ((FPActivityFragment) fragment).transferData(transArr, user1Arr, user2Arr, typeArr, descArr, amtArr, dateArr);
+            cancel(true);
+            /*
+            Intent intent = new Intent(fragment, FPActivityFragment.class);
             intent.putExtra("TRANSACTION_IDS", transArr);
             intent.putExtra("USER_IDS1", user1Arr);
             intent.putExtra("USER_IDS2", user2Arr);
@@ -124,6 +123,7 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
             intent.putExtra("AMOUNTS", amtArr);
             intent.putExtra("DATES", dateArr);
             context.startActivity(intent);
+            */
         }
     }
 

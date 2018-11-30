@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new NewTransactionFragment();
                     break;
                 case R.id.navigation_activity:
+
                     selectedFragment = new ActivityFragment();
                     break;
                 case R.id.navigation_profile:

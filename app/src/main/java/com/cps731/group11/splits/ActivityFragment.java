@@ -18,16 +18,20 @@ import java.util.List;
 public class ActivityFragment extends Fragment {
 
     private ViewPager viewPager;
+    Fragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        fragment = this;
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        fragment = this;
         View view = inflater.inflate(R.layout.fragment_activity, container, false);
 
         //sectionsPageAdapter = new SectionsPageAdapter(getChildFragmentManager());
@@ -75,4 +79,6 @@ public class ActivityFragment extends Fragment {
             return fragmentList.size();
         }
     }
+
+
 }
