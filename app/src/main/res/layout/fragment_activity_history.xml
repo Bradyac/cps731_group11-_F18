@@ -27,7 +27,7 @@
         android:layout_width="382dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="180dp"
         android:layout_marginEnd="2dp"
         android:text="Bobbert Warsaw borrowed $50.25 for Bubble Tea on 2018-12-01"
         android:textAlignment="center"
