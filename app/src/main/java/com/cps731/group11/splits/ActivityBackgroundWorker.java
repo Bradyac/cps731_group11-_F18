@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -23,10 +25,11 @@ import java.util.ArrayList;
 
 public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
     Fragment fragment;
+    Context context;
     AlertDialog alertDialog;
 
-    ActivityBackgroundWorker(Fragment fragment) {
-        this.fragment = fragment;
+    ActivityBackgroundWorker(Context context) {
+        this.context = context;
 
     }
 
@@ -35,10 +38,12 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
         super.onPreExecute();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
         String activity_url = "http://splits.atwebpages.com/activity.php";
+        String resultString = "";
         switch(type) {
             case "activity":
 
@@ -64,8 +69,14 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
                     InputStream inputStream = httpURLConnection.getInputStream();
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                     ArrayList<String> server_reply = new ArrayList<String>();
+
                     String line;
                     while((line = bufferedReader.readLine()) != null) {
+
+                        String temp = String.join(",", line);
+                        String temp2 = temp.replaceAll("(\\s*<[Bb][Rr]\\s*/?>)+\\s*$", "");
+                        resultString = resultString.concat(temp2);
+                        resultString = resultString.concat("\n");
 
                         server_reply.add(line);
                         server_reply.add("\n");
@@ -75,7 +86,10 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
 
                     // Close connection
                     httpURLConnection.disconnect();
-                    return String.valueOf(server_reply);
+
+
+
+                    return resultString;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -86,6 +100,7 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String server_reply) {
+        super.onPostExecute(server_reply);
         if(server_reply.equals("error!")) {
             // Login Failed: Alert that login failedretrieve data.");
             alertDialog.show();
@@ -111,10 +126,10 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
             }
 
             // USE THIS TO TRANSFER DATA. SET DATA TO PARAM. THIS METHOD IS IN ActivityFragment.java
-            ((FPActivityFragment) fragment).transferData(transArr, user1Arr, user2Arr, typeArr, descArr, amtArr, dateArr);
-            cancel(true);
-            /*
-            Intent intent = new Intent(fragment, FPActivityFragment.class);
+            //((FPActivityFragment) fragment).transferData(transArr, user1Arr, user2Arr, typeArr, descArr, amtArr, dateArr);
+
+
+            Intent intent = new Intent(context, FPActivityFragment.class);
             intent.putExtra("TRANSACTION_IDS", transArr);
             intent.putExtra("USER_IDS1", user1Arr);
             intent.putExtra("USER_IDS2", user2Arr);
@@ -122,13 +137,9 @@ public class ActivityBackgroundWorker extends AsyncTask<String,Void,String> {
             intent.putExtra("DESCRIPTIONS", descArr);
             intent.putExtra("AMOUNTS", amtArr);
             intent.putExtra("DATES", dateArr);
-            context.startActivity(intent);
-            */
-        }
-    }
 
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
+
+
+        }
     }
 }
