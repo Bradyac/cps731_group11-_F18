@@ -26,7 +26,6 @@ public class NewTransactionFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @Nullable
@@ -36,12 +35,12 @@ public class NewTransactionFragment extends Fragment {
         userID = ((MainActivity)getActivity()).getCurrentUser();
         NewTransactionBackgroundWorker newTransactionBackgroundWorker = new NewTransactionBackgroundWorker(fragment);
         newTransactionBackgroundWorker.execute("Friends", userID);
-        //nt_Amount = getView().findViewById(R.id.et_ntAmount);
-        //nt_Description = getView().findViewById(R.id.et_ntDescription);
-        //nt_Friends = getView().findViewById(R.id.spin_ntFriends);
-        //adapter = new ArrayAdapter<String>(getContext(), R.layout.fragment_new_transaction,R.id.spin_ntFriends,listItems);
-        //nt_Friends.setAdapter(adapter);
-        //transactionTypes = getView().findViewById(R.id.radio_transactionTypes);
+        nt_Amount = getActivity().findViewById(R.id.et_ntAmount);
+        nt_Description = getActivity().findViewById(R.id.et_ntDescription);
+        nt_Friends = getActivity().findViewById(R.id.spin_ntFriends);
+        adapter = new ArrayAdapter<String>(getContext(), R.layout.fragment_new_transaction,R.id.spin_ntFriends,listItems);
+        nt_Friends.setAdapter(adapter);
+        transactionTypes = getActivity().findViewById(R.id.radio_transactionTypes);
 
         View view = inflater.inflate(R.layout.fragment_new_transaction, container, false);
         return view;
