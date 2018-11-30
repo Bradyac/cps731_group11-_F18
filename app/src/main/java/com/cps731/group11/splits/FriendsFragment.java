@@ -23,7 +23,6 @@ public class FriendsFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private FriendsAdapter friendsAdapter;
     String userID;
-    Friend[] list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +41,13 @@ public class FriendsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.friendList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        Friend[] list = {
+                new Friend("Jane Smith",0),
+                new Friend("Josh Kesler",1),
+                new Friend("Chris Tucker", 2),
+                new Friend("Amy Kesler", 3)
+        };
 
         FriendsAdapter friendsAdapter = new FriendsAdapter(list);
         recyclerView.setAdapter(friendsAdapter);
@@ -64,6 +70,6 @@ public class FriendsFragment extends Fragment {
         while(scanner.hasNext()){
             friendList.add(new Friend(scanner.next(), Integer.parseInt(scanner.next())));
         }
-        list = friendList.toArray(new Friend[friendList.size()]);
+        friendList.toArray(new Friend[friendList.size()]);
     }
 }
