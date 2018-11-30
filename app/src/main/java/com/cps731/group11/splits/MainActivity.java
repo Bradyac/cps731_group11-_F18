@@ -59,4 +59,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     };
+    
+    public String getCurrentUser() {
+        return current_user_id;
+    }
 }
