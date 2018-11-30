@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".NewTransactionFragment"
     tools:layout_editor_absoluteY="25dp">
 
     <EditText
@@ -27,7 +27,7 @@
         android:layout_marginTop="300dp"
         android:ems="10"
         android:hint="Description"
-        android:inputType="numberDecimal"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
