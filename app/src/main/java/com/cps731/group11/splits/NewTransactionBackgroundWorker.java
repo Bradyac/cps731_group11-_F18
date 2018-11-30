@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 public class NewTransactionBackgroundWorker extends AsyncTask<String, String, String>{
     Fragment fragment;
@@ -35,19 +36,43 @@ public class NewTransactionBackgroundWorker extends AsyncTask<String, String, St
         super.onPreExecute();
         friendsList = new ArrayList<>();
     }
-
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        System.out.println(type);
         if (type.equalsIgnoreCase("Friends")) {
-            String id = params[1];
+            //String id = params[1];
+
+
+
+
+
+
+            String id = "1";
+
+
+
+
+
+
+
+
+
+
+
             try {
                 URL url = new URL("http://splits.atwebpages.com/getFriends.php");
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String client_request = URLEncoder.encode("user", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+                bufferedWriter.write(client_request);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
 
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
@@ -59,7 +84,6 @@ public class NewTransactionBackgroundWorker extends AsyncTask<String, String, St
                 bufferedReader.close();
                 inputStream.close();
                 httpURLConnection.disconnect();
-                System.out.println(server_reply);
                 return server_reply;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -111,5 +135,11 @@ public class NewTransactionBackgroundWorker extends AsyncTask<String, String, St
             }
         }
         return null;
+    }
+    protected void onPostExecute(String server_reply) {
+        if (server_reply.contains("FRIEND")) {
+            Log.d("NewTransactionBackgroundWorker", server_reply);
+            ((NewTransactionFragment)fragment).storeFriends(server_reply);
+        }
     }
 }
