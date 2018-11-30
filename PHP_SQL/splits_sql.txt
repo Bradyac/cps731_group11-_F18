@@ -1,0 +1,45 @@
+CREATE TABLE profile_pictures (
+	picture_id INT NOT NULL,
+	picture BLOB NOT NULL,
+	PRIMARY KEY (picture_id)
+);
+
+CREATE TABLE users (
+	user_id INT NOT NULL,
+    forename TEXT NOT NULL,
+    surname TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    picture_id INT NOT NULL,
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (picture_id) REFERENCES profile_pictures(picture_id)
+);
+
+CREATE TABLE friends (
+	user_id1 INT NOT NULL,
+    user_id2 INT NOT NULL,
+    FOREIGN KEY (user_id1) REFERENCES users(user_id),
+    FOREIGN KEY (user_id2) REFERENCES users(user_id)
+);
+
+CREATE TABLE balances (
+	user_id1 INT NOT NULL,
+    user_id2 INT NOT NULL,
+    balance decimal(19,2) NOT NULL,
+    FOREIGN KEY (user_id1) REFERENCES users(user_id),
+    FOREIGN KEY (user_id2) REFERENCES users(user_id)
+);
+
+CREATE TABLE transactions (
+    transaction_id INT NOT NULL,
+	user_id1 INT NOT NULL,
+    user_id2 INT NOT NULL,
+    type TEXT NOT NULL,
+    description TEXT DEFAULT NULL,
+    amount decimal(19,2) NOT NULL,
+    date DATE NOT NULL,
+    picture BLOB DEFAULT NULL,
+    PRIMARY KEY (transaction_id),
+    FOREIGN KEY (user_id1) REFERENCES users(user_id),
+    FOREIGN KEY (user_id2) REFERENCES users(user_id)
+);
