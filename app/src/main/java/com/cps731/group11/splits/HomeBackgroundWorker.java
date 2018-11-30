@@ -28,7 +28,7 @@ public class HomeBackgroundWorker extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String web_url = "http://splits.atwebpages.com/testFrag.php";
+        String web_url = "http://splits.atwebpages.com/homeGetBalance.php";
         switch (type) {
             case "test":
                 String userID = params[1];
@@ -76,7 +76,7 @@ public class HomeBackgroundWorker extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String s) {
         Log.d("HomeBackgroundWorker", "Reply: " + s);
-        ((BalanceHomeFragment) fragment).tester(s);
+        ((BalanceHomeFragment) fragment).transferData(s);
     }
 
     @Override
